@@ -1,4 +1,5 @@
-const STORAGE_KEY = "quizQuestions";
+const QUIZ_STORAGE_KEY = "quizQuestions";
+const QUIZ_ID_STORAGE_KEY = "quizID";
 
 const defaultQuestions = [
   {
@@ -15,8 +16,9 @@ const defaultQuestions = [
       "Daniel Radcliffe became a global star in the film industry due to his performance in which film franchise?",
     answer: "Harry Potter",
     tags: ["danielradcliffe", "hewhomustnotbenamed", "abracadabra"],
-    isBookmarked: true,
+    isBookmarked: false,
   },
+  /*
   {
     id: 3,
     question:
@@ -46,23 +48,32 @@ const defaultQuestions = [
       "What programming language was originally developed as a teaching tool and is now widely used in web development?",
     answer: "JavaScript",
     tags: ["programming", "nerd", "web"],
-    isBookmarked: true,
+    isBookmarked: false,
   },
+  */
 ];
 
-if (!localStorage.getItem(STORAGE_KEY)) {
+if (false) {
+  localStorage.clear();
+}
+
+if (!localStorage.getItem(QUIZ_STORAGE_KEY)) {
   // Initialization
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultQuestions));
+  localStorage.setItem(QUIZ_STORAGE_KEY, JSON.stringify(defaultQuestions));
+  localStorage.setItem(QUIZ_ID_STORAGE_KEY, 7);
 }
 
 function getAllQuestions() {
-  return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  return JSON.parse(localStorage.getItem(QUIZ_STORAGE_KEY) || "[]");
 }
 
 function addQuestion(newQuestion) {
   const questions = getAllQuestions();
+  const newID = localStorage.getItem(QUIZ_ID_STORAGE_KEY) + 1;
+  newQuestion.id = questions.length + 1;
+  localStorage.setItem(QUIZ_ID_STORAGE_KEY, newID);
   questions.push(newQuestion);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(questions));
+  localStorage.setItem(QUIZ_STORAGE_KEY, JSON.stringify(questions));
 }
 
 function deleteQuestion(questionId) {
@@ -70,7 +81,7 @@ function deleteQuestion(questionId) {
   const updatedQuestions = questions.filter(
     (question) => question.id !== questionId
   );
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedQuestions));
+  localStorage.setItem(QUIZ_STORAGE_KEY, JSON.stringify(updatedQuestions));
 }
 
 function updateQuestion(updatedQuestion) {
@@ -78,7 +89,7 @@ function updateQuestion(updatedQuestion) {
   const updatedQuestions = questions.map((question) =>
     question.id === updatedQuestion.id ? updatedQuestion : question
   );
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedQuestions));
+  localStorage.setItem(QUIZ_STORAGE_KEY, JSON.stringify(updatedQuestions));
 }
 
 function toggleBookmark(questionId) {
@@ -88,7 +99,7 @@ function toggleBookmark(questionId) {
       ? { ...question, isBookmarked: !question.isBookmarked }
       : question
   );
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedQuestions));
+  localStorage.setItem(QUIZ_STORAGE_KEY, JSON.stringify(updatedQuestions));
 }
 
 export {
