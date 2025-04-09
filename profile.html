@@ -73,17 +73,8 @@
     </main>
     <script type="module">
       import { appendBottomNavigation } from './script/create_bottom_navigation.js';
-      import { createQuizCard } from "./script/create_quiz_Card.js";
-      import { getAllQuestions, toggleBookmark } from './script/local_storage_db.js';
-    
       appendBottomNavigation();
       const container = document.querySelector(".card-list");
-      const questions = getAllQuestions();
-    
-      questions.forEach((questionObj) => {
-        const cardElement = createQuizCard(questionObj, toggleBookmark);
-        container.appendChild(cardElement);
-      });
     </script>
   </body>
 </html>
