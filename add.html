@@ -12,21 +12,42 @@
       <h1 class="header__title">Quiz-App</h1>
     </header>
     <main>
-      <ul class="card-list">
-      </ul>
+      <form class="form" action="#">
+        <h2 class="card__question">Add a new question</h2>
+        <label for="question">*Your question:</label>
+        <textarea type="text" id="question" name="question" maxlength="150" placeholder="What is ..."></textarea>
+        <label for="answer">*Your answer:</label>
+        <textarea type="text" id="answer" name="answer" maxlength="150" placeholder="The answer is ..."" /></textarea>
+        <label for="tag">Tags: </label>
+        <input type="text" id="tags" name="tags" placeholder="e.g. math, science, history"/>
+        <button type="submit">Submit</button> 
+      </form>
     </main>
     <script type="module">
       import { appendBottomNavigation } from './script/create_bottom_navigation.js';
-      import { addQuestion } from './script/local_storage_db.js';
+      import { addQuestion } from './script/questions_db.js';
     
       appendBottomNavigation();
       const container = document.querySelector(".card-list");
-      const questions = getAllQuestions();
+
+      const form = document.querySelector(".form");
     
-      questions.forEach((questionObj) => {
-        const cardElement = createQuizCard(questionObj, toggleBookmark);
-        container.appendChild(cardElement);
+
+      form.addEventListener("submit", (event) => {
+        console.log("submit");
+        event.preventDefault();
+        let question = {
+          question: document.querySelector("#question").value,
+          answer: document.querySelector("#answer").value,
+          tags: document.querySelector("#tags").value.split(","),
+        }
+        if(question.question === "" || question.answer === "" || question.tags.length === 0){
+          alert("Please fill out all fields");
+          return;
+        }
+        addQuestion(question);
       });
+
     </script>
   </body>
 </html>

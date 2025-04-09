@@ -18,13 +18,14 @@
     <script type="module">
       import { appendBottomNavigation } from './script/create_bottom_navigation.js';
       import { createQuizCard } from "./script/create_quiz_Card.js";
-      import { getAllQuestions, toggleBookmark } from './script/local_storage_db.js';
+      import { getAllQuestions, toggleBookmark } from './script/questions_db.js';
     
       appendBottomNavigation();
       const container = document.querySelector(".card-list");
       const questions = getAllQuestions();
     
       questions.forEach((questionObj) => {
+        if (!questionObj.isBookmarked) return;
         const cardElement = createQuizCard(questionObj, toggleBookmark);
         container.appendChild(cardElement);
       });
